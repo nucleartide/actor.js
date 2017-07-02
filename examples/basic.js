@@ -1,11 +1,11 @@
 // @flow
 
 /*::
-import type Deferred from './deferred'
+import type Deferred from '../lib/deferred'
 declare function $await<T>(p: Deferred<T> | T): T
 */
 
-const spawn = require('.')
+const spawn = require('..')
 
 const jason = spawn(async function() {
   const msg = 'sup fam'
