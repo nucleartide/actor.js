@@ -4,5 +4,6 @@
   },
   "scripts": {
     "test": "flow"
-  }
+  },
+  "main": "lib/index.js"
 }
