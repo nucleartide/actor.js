@@ -3,6 +3,10 @@ const Ok = Symbol('ok')
 const Err = Symbol('error')
 const Deferred = require('./deferred')
 
+/**
+ * Spawn an actor.
+ */
+
 module.exports = function spawn(fn) {
   setTimeout(fn, 0) // wait for `Actor` references to be defined
   return new Actor
@@ -50,7 +54,6 @@ class Actor {
     }
 
     processUntilOk()
-
     return this._returned
   }
 
