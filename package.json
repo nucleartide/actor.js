@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "flow-bin": "^0.49.1"
+  },
+  "scripts": {
+    "test": "flow"
   }
 }
