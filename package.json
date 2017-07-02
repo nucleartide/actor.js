@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "flow-bin": "^0.49.1"
+  }
+}

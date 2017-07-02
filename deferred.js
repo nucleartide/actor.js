@@ -1,22 +1,45 @@
+// @flow
 
-// Alternate version of https://github.com/tj/deferred.js
-// that hangs until resolved or rejected.
+/**
+ * Alternate version of https://github.com/tj/deferred.js
+ * that hangs until resolved or rejected.
+ */
 
-module.exports = function Deferred() {
-  const id = setInterval(() => {}, ~(1 << 31))
+module.exports = class Deferred /*:: <R> */ {
+  /*::
+  resolve: (result: Promise<R> | R) => void
 
-  const p = new Promise((resolve, reject) => {
-    this.resolve = function() {
-      clearInterval(id)
-      resolve(...arguments)
-    }
+  reject: (error: any) => void
 
-    this.reject = function() {
-      clearInterval(id)
-      reject(...arguments)
-    }
-  })
+  then: <U>(
+    onFulfill?: (value: R) => Promise<U> | U,
+    onReject?:  (error: any) => Promise<U> | U
+  ) => Promise<U>
 
-  this.then = p.then.bind(p)
-  this.catch = p.catch.bind(p)
+  catch: <U>(
+    onReject?: (error: any) => Promise<U> | U
+  ) => Promise<R | U>
+  */
+
+  constructor() {
+    const id = setInterval(() => {}, ~(1 << 31))
+
+    const p = new Promise((resolve, reject) => {
+      this.resolve = function() {
+        clearInterval(id)
+        resolve(...arguments)
+      }
+
+      this.reject = function() {
+        clearInterval(id)
+        reject(...arguments)
+      }
+    })
+
+    const then /*: any */ = p.then
+    const _catch /*: any */ = p.catch
+
+    this.then = then.bind(p)
+    this.catch = _catch.bind(p)
+  }
 }

@@ -1,18 +1,29 @@
+// @flow
 
-const Ok = Symbol('ok')
-const Err = Symbol('error')
 const Deferred = require('./deferred')
+
+/*::
+type Result = ['ok', mixed] | ['error', mixed]
+*/
 
 /**
  * Spawn an actor.
  */
 
-module.exports = function spawn(fn) {
-  setTimeout(fn, 0) // wait for `Actor` references to be defined
+module.exports = function spawn(
+  fn      /*: (...args: Array<mixed>) => void | Promise<void> */,
+  ...args /*: Array<mixed> */
+) {
+  setTimeout(fn, 0, ...args) // wait for `Actor` references to be defined
   return new Actor
 }
 
 class Actor {
+  /*::
+  _mailbox: Array<mixed>
+  _returned: Deferred<mixed>
+  _internal: Deferred<mixed>
+  */
 
   /**
    * Initialize empty mailbox.
@@ -20,6 +31,8 @@ class Actor {
 
   constructor() {
     this._mailbox = []
+    this._returned = new Deferred
+    this._internal = new Deferred
   }
 
   /**
@@ -28,9 +41,9 @@ class Actor {
    * If the actor is waiting for mail, alert the actor of new mail.
    */
 
-  send(mail) {
+  send(mail /*: mixed */) {
     this._mailbox.push(mail)
-    if (this._internal) this._internal.resolve()
+    this._internal.resolve()
   }
 
   /**
@@ -39,15 +52,20 @@ class Actor {
    * Note: this method is asynchronous.
    */
 
-  receive(pattern) {
-    this._returned = new Deferred
-
+  receive(pattern /*: (mixed) => mixed */) /*: Deferred<mixed> */ {
     const processUntilOk = () => {
       const [status, match] = this._process(pattern)
-      if (status === Ok) {
+
+      if (status === 'ok') {
         this._returned.resolve(match)
-        this._internal = null
-      } else {
+        this._returned = new Deferred
+
+        this._internal.reject()
+        this._internal = new Deferred
+      }
+
+      if (status === 'error') {
+        this._internal.reject()
         this._internal = new Deferred
         this._internal.then(processUntilOk)
       }
@@ -63,17 +81,17 @@ class Actor {
    * This is outlined on page 140 of "Elixir in Action".
    */
 
-  _process(pattern) {
+  _process(pattern /*: (mixed) => mixed */) /*: Result */ {
     for (let i = 0; i < this._mailbox.length; i++) {
       const mail = this._mailbox[i]
       const match = pattern(mail)
 
       if (match !== undefined) {
         this._mailbox.splice(i, 1)
-        return [Ok, match]
+        return ['ok', match]
       }
     }
 
-    return [Err]
+    return ['error', 'No matches.']
   }
 }
