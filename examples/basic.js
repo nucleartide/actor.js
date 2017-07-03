@@ -20,23 +20,16 @@ const dog = spawn(async function() {
 })
 
 const jesse = spawn(async function() {
-  let result = await jesse.receive(mail => {
-    switch (mail) {
-    case 'sup fam':
-      return 'sup'
-    }
-  })
+  for (let i = 0; i < 2; i++) {
+    const result = await jesse.receive(mail => {
+      switch (mail) {
+      case 'sup fam': return 'sup'
+      case 'woof': return 'stahp'
+      }
+    })
 
-  log('jesse', result)
-
-  result = await jesse.receive(mail => {
-    switch (mail) {
-    case 'woof':
-      return 'stahp'
-    }
-  })
-
-  log('jesse', result)
+    log('jesse', result)
+  }
 })
 
 function log(actor, result) {
