@@ -33,7 +33,5 @@ const jesse = spawn(async function() {
 })
 
 function log(actor, result) {
-  if (typeof result === 'string') {
-    console.log(`${actor}: ${result}`)
-  }
+  if (typeof result === 'string') console.log(`${actor}: ${result}`)
 }
