@@ -28,26 +28,105 @@ describe('spawn', function() {
     assert.equal(a, 'jesse')
   })
 
+  it('accepts args', async function() {
+    const args = await spawn((a, b, c) => [a, b, c], 'do', 're', 'mi')
+    assert.deepEqual(args, ['do', 're', 'mi'])
+  })
+
+  it('returns a rejected Promise on error', async function() {
+    let expect = 0
+
+    try {
+      await spawn(() => { throw 'error' })
+    } catch (err) {
+      assert.equal(err, 'error')
+      expect++
+    }
+
+    assert.equal(expect, 1)
+  })
+})
+
+describe('send and receive', function() {
   it('can send and receive messages', async function() {
-    const a = spawn(function() {
-      b.send('hello')
+    spawn(function() {
+      pid.send('hello')
     })
 
-    const b = spawn(async function() {
+    const pid = spawn(async function() {
       return await this.receive(mail => {
         if (mail === 'hello') return "is it me you're looking for"
-        if (mail === 'flank') return 'steak'
       })
     })
 
-    assert.equal(await b, "is it me you're looking for")
+    assert.equal(await pid, "is it me you're looking for")
   })
 
-  it('accepts args')
+  it('returns a rejected Promise on receive error', async function() {
+    let expect = 0
 
-  it('handles errors')
+    const pid = spawn(async function() {
+      try {
+        await this.receive(() => { throw 'err' })
+      } catch (err) {
+        assert.equal(err, 'err')
+        expect++
+      }
+    })
 
-  it("stops processing mail on error")
+    pid.send('hi')
+    await pid
 
-  it("stops processing mail on success")
+    assert.equal(expect, 1)
+  })
+
+  it('stops processing mail on success', async function() {
+    const pid = spawn(async function() {
+      for (let i = 0; i < 10; i++) {
+        const a = await this.receive(mail => {
+          if (mail === 'a') return 'a'
+        })
+
+        assert.equal(a, 'a')
+      }
+    })
+
+    for (let i = 0; i < 10; i++) pid.send('a')
+    await pid
+  })
+
+  it('stops processing mail on error', async function() {
+    const pid = spawn(async function() {
+      let expect = 0
+      try {
+        await this.receive(mail => {
+          if (mail === 'a') throw 'error'
+          if (mail === 'b') return 'b'
+        })
+      } catch (err) {
+        expect++
+      }
+
+      // mailbox: ['a', 'b']
+      assert.equal(expect, 1)
+
+      const a = await this.receive(mail => {
+        if (mail === 'a') return 'a'
+      })
+
+      // mailbox: ['b']
+      assert.equal(a, 'a')
+
+      const b = await this.receive(mail => {
+        if (mail === 'b') return 'b'
+      })
+
+      // mailbox: []
+      assert.equal(b, 'b')
+    })
+
+    pid.send('a')
+    pid.send('b')
+    await pid
+  })
 })
