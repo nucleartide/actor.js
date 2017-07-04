@@ -33,7 +33,7 @@ debug@2.6.0:
   dependencies:
     ms "0.7.2"
 
-deferred@tj/deferred.js:
+"deferred@github:tj/deferred.js":
   version "0.0.1"
   resolved "https://codeload.github.com/tj/deferred.js/tar.gz/40655582a774f6894fd93f9f8450349093e0ab36"
 
