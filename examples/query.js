@@ -1,7 +1,10 @@
 // @flow
 
 const spawn = require('..')
-const sleep = require('../lib/sleep')
+
+function sleep() {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
 
 function asyncQuery(queryDef) {
   spawn(async function() {

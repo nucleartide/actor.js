@@ -28,7 +28,9 @@
   "scripts": {
     "test": "flow && mocha"
   },
-  "dependencies": {},
+  "dependencies": {
+    "deferred": "tj/deferred.js"
+  },
   "devDependencies": {
     "flow-bin": "^0.49.1",
     "mocha": "^3.4.2"

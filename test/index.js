@@ -2,14 +2,13 @@
 const assert = require('assert')
 const spawn = require('..')
 
-// `spawn()` is like `co()`, except it accepts non-generator
-// functions. The return value of `spawn()` also exposes a
-// `.send()` method.
-
 describe('spawn', function() {
   it('returns a thenable', async function() {
     const a = await spawn(() => {}).then(() => 'hello')
     assert.equal(a, 'hello')
+
+    const b = await spawn(() => {}).then(() => { throw 'world' }).catch(e => e)
+    assert.equal(b, 'world')
   })
 
   it('works with plain functions', async function() {
@@ -29,7 +28,26 @@ describe('spawn', function() {
     assert.equal(a, 'jesse')
   })
 
-  it('can receive messages')
+  it('can send and receive messages', async function() {
+    const a = spawn(function() {
+      b.send('hello')
+    })
+
+    const b = spawn(async function() {
+      return await this.receive(mail => {
+        if (mail === 'hello') return "is it me you're looking for"
+        if (mail === 'flank') return 'steak'
+      })
+    })
+
+    assert.equal(await b, "is it me you're looking for")
+  })
+
+  it('accepts args')
 
   it('handles errors')
+
+  it("stops processing mail on error")
+
+  it("stops processing mail on success")
 })
