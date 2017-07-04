@@ -26,10 +26,11 @@
     "url": "git+https://github.com/nucleartide/actor.js.git"
   },
   "scripts": {
-    "test": "flow"
+    "test": "flow && mocha"
   },
   "dependencies": {},
   "devDependencies": {
-    "flow-bin": "^0.49.1"
+    "flow-bin": "^0.49.1",
+    "mocha": "^3.4.2"
   }
 }
