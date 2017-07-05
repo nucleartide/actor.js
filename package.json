@@ -34,6 +34,7 @@
     "deferred": "github:tj/deferred.js"
   },
   "devDependencies": {
+    "axios": "^0.16.2",
     "flow-bin": "^0.49.1",
     "mocha": "^3.4.2"
   }
