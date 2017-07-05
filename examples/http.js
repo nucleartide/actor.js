@@ -5,6 +5,7 @@
 
 const spawn = require('..')
 const axios = require('axios')
+const { take } = require('./_util')
 
 // worker
 async function worker(i) {
@@ -52,14 +53,3 @@ spawn(async function() {
   lb.send('http://pagerduty.com')
   lb.send(null)
 })
-
-function* numbers(max) {
-  let n = 1
-  while (n <= max) yield n++
-}
-
-function take(n) {
-  const results = []
-  for (const num of numbers(n)) results.push(num)
-  return results
-}

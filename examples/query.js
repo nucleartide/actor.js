@@ -1,6 +1,7 @@
 // @flow
 
 const spawn = require('..')
+const { take, all } = require('./_util')
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -21,20 +22,3 @@ const main = spawn(async function() {
   const results = await all(queries)
   console.log(results)
 })
-
-function* numbers(max) {
-  let n = 1
-  while (n <= max) yield n++
-}
-
-function take(n) {
-  const results = []
-  for (const num of numbers(n)) results.push(num)
-  return results
-}
-
-async function all(funcs) {
-  const results = []
-  for (const f of funcs) results.push(await f())
-  return results
-}
