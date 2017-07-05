@@ -10,7 +10,7 @@ const { take } = require('./_util')
 // worker
 async function worker(i) {
   while (1) {
-    const url = await this.receive(url => url)
+    const url = await this.receive()
     if (url === null) break
 
     console.log('[%d]: GET %s', i, url)
@@ -31,7 +31,7 @@ const lb = spawn(async function() {
   let reqs = 0
 
   while (1) {
-    const url = await this.receive(url => url)
+    const url = await this.receive()
     if (url === null) {
       workers.forEach(w => w.send(null))
       break

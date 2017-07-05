@@ -17,7 +17,7 @@ function asyncQuery(queryDef) {
 const main = spawn(async function() {
   const queries = take(5)
     .map(i => asyncQuery(`query ${i}`))
-    .map(() => () => this.receive(a => a))
+    .map(() => () => this.receive())
 
   const results = await all(queries)
   console.log(results)
