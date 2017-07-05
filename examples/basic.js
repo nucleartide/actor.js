@@ -1,3 +1,4 @@
+// @flow
 
 const spawn = require('..')
 

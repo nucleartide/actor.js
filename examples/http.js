@@ -1,3 +1,4 @@
+// @flow
 
 // Example adopted from TJ's channel.js lib:
 // https://github.com/tj/channel.js/blob/master/examples/http.js
