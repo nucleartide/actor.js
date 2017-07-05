@@ -68,6 +68,18 @@ describe('send and receive', function() {
     assert.equal(await pid, "is it me you're looking for")
   })
 
+  it('defaults receive pattern to the identity function', async function() {
+    spawn(function() {
+      pid.send('hello')
+    })
+
+    const pid = spawn(async function() {
+      return await this.receive();
+    })
+
+    assert.equal(await pid, "hello")
+  })
+
   it('returns a rejected Promise on receive error', async function() {
     let expect = 0
 
