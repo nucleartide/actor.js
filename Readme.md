@@ -1,6 +1,8 @@
 # actor.js
 
-Elixir-style actors in JavaScript. Spawn "processes", then send and receive messages between them – like you would in Elixir.
+Elixir-style actors in JavaScript. Spawn "processes", then send and receive messages between them – just like you would in Elixir.
+
+You can think of it as [`co`](https://github.com/tj/co), but with message passing.
 
 ## Example
 
