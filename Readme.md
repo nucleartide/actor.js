@@ -23,7 +23,7 @@ See the [included examples](examples/) for more use cases.
 ## Install
 
 ```
-$ yarn add actor.js
+$ yarn add actorjs
 ```
 
 ## API

@@ -1,5 +1,5 @@
 {
-  "name": "actor",
+  "name": "actorjs",
   "version": "0.0.1",
   "description": "Elixir-style actors in JavaScript",
   "keywords": [
