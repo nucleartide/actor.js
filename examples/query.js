@@ -1,8 +1,7 @@
-// @flow
 
 const spawn = require('..')
 
-function sleep() {
+function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
@@ -16,7 +15,7 @@ function asyncQuery(queryDef) {
 const main = spawn(async function() {
   const queries = take(5)
     .map(i => asyncQuery(`query ${i}`))
-    .map(() => () => main.receive(a => a))
+    .map(() => () => this.receive(a => a))
 
   const results = await all(queries)
   console.log(results)

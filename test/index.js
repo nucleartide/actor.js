@@ -1,6 +1,7 @@
 
 const assert = require('assert')
 const spawn = require('..')
+const PID = require('../lib/pid')
 
 describe('spawn', function() {
   it('returns a thenable', async function() {
@@ -128,5 +129,17 @@ describe('send and receive', function() {
     pid.send('a')
     pid.send('b')
     await pid
+  })
+})
+
+describe('thenable', function() {
+  it('returns PID for then', async function() {
+    const pid = spawn(() => {}).then()
+    assert(pid instanceof PID)
+  })
+
+  it('returns PID for catch', async function() {
+    const pid = spawn(() => {}).catch()
+    assert(pid instanceof PID)
   })
 })
