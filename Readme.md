@@ -50,20 +50,23 @@ pid.send(['ok', 'this is a message'])
 
 Block until a received message matches the passed-in `pattern` function.
 
-The `pattern` function takes an arbitrary `message` as input, and returns a result based on that `message`.
+The `pattern` function takes an arbitrary `message` as input, and returns a result based on that `message`. By default, the `pattern` function is the identity function.
 
 A result of `undefined` is not considered to be a match, and thus `this.receive()` will continue blocking.
 
 ```js
 const pid = spawn(async function() {
-  const v = await this.receive(msg => {
+  let v = await this.receive(msg => {
     const [status, value] = msg
     if (status === 'hello') return value
     if (status === 'world') return "won't match"
   })
+
+  v = await this.receive()
 })
 
 pid.send(['hello', 'yes this is dog'])
+pid.send('anything')
 ```
 
 #### `PID#then(value =>)`, `PID#catch(err =>)`
