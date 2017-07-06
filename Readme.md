@@ -50,7 +50,7 @@ pid.send(['ok', 'this is a message'])
 
 Block until a received message matches the passed-in `pattern` function.
 
-The `pattern` function takes an arbitrary `message` as input, and returns a result based on that `message`. By default, the `pattern` function is the identity function.
+The `pattern` function takes an arbitrary `message` as input, and returns a result based on that `message`. By default, the `pattern` function is the [identity function](https://github.com/nucleartide/actor.js/blob/a6ca73c9acf1c5e5ae431ba0f4f3e70bfb6a425e/lib/actor.js#L37).
 
 A result of `undefined` is not considered to be a match, and thus `this.receive()` will continue blocking.
 
