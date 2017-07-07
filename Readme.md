@@ -4,6 +4,8 @@ Elixir-style actors in JavaScript. Spawn "processes", then send and receive mess
 
 You can think of it as [`co`](https://github.com/tj/co), but with message passing.
 
+**Note:** this library doesn't use Web Workers or Node's `child_process` or anything, so it's not truly parallel code. However, this may change in the future once I learn more about these APIs. :)
+
 ## Example
 
 ```js
